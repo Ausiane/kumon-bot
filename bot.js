@@ -1,8 +1,9 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
+
 const client = new Client({
     authStrategy: new LocalAuth({
-        clientId: 'kumon-lourdes'
+        clientId: 'kumon-bot'
     }),
 
     puppeteer: {
@@ -16,3 +17,23 @@ const client = new Client({
         ]
     }
 });
+
+client.on('qr', (qr) => {
+    console.log('QR RECEBIDO, escaneie:');
+    qrcode.generate(qr, { small: true });
+});
+
+client.on('ready', () => {
+    console.log('WhatsApp autenticado ✅');
+    console.log('BOT CONECTADO 🚀');
+});
+
+client.on('auth_failure', msg => {
+    console.error('Falha na autenticação:', msg);
+});
+
+client.on('disconnected', (reason) => {
+    console.log('Desconectado:', reason);
+});
+
+client.initialize();
