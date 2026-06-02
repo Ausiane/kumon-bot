@@ -1,11 +1,12 @@
+process.env.PUPPETEER_SKIP_DOWNLOAD = "true";
+
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 
 const client = new Client({
     authStrategy: new LocalAuth({
-        clientId: 'kumon-bot'
+        clientId: "kumon-bot"
     }),
-
     puppeteer: {
         headless: "new",
         args: [
@@ -18,22 +19,14 @@ const client = new Client({
     }
 });
 
-client.on('qr', (qr) => {
-    console.log('QR RECEBIDO, escaneie:');
+client.on('qr', qr => {
+    console.log('QR CODE:');
     qrcode.generate(qr, { small: true });
 });
 
 client.on('ready', () => {
     console.log('WhatsApp autenticado ✅');
     console.log('BOT CONECTADO 🚀');
-});
-
-client.on('auth_failure', msg => {
-    console.error('Falha na autenticação:', msg);
-});
-
-client.on('disconnected', (reason) => {
-    console.log('Desconectado:', reason);
 });
 
 client.initialize();
